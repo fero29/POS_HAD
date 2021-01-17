@@ -30,14 +30,14 @@ void Map::refreshMap()
 
     
 
-    // for(int i = 0; i < (int)apples.size(); i++)
-    // {
-    //     int eat = whoEatApple(apples[i]);
-    //     if(eat != -1)
-    //     {
-    //         snakes[eat].grow();
-    //     }
-    // }
+    for(int i = 0; i < (int)apples.size(); i++)
+    {
+        int eat = whoEatApple(apples[i]);
+        if(eat != -1)
+        {
+            snakes[eat].grow();
+        }
+    }
 
     drawMap();
 
@@ -111,7 +111,7 @@ void Map::drawMap()
 
     //-------------------------------------------------------------------
 
-    clearScreen();
+    //clearScreen();
 
     for (size_t i = 0; i < MAP_SIZE + 2; i++)
     {

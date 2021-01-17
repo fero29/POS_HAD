@@ -109,6 +109,7 @@ void ClientLogic::gameRuntime()
     while(!gameRunning);
     while(gameRunning)
     {
+        std::cout<<"snake pos"<<map.getSnake(0).getHead().first<<" "<<map.getSnake(0).getHead().second<<std::endl;
         map.refreshMap();
         stepPause();
     }

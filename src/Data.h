@@ -6,7 +6,6 @@
 
 #define GAME_SPEED 1000000 //microseconds between step
 
-
 enum Direction
 {
     up = 0,

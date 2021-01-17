@@ -24,15 +24,18 @@ void ServerLogic::serverRuntime()
     }
 }
 
+
 void ServerLogic::serverStep() 
 {
     for (size_t i = 0; i < apples.size(); i++)
     {
         int eat = whoEatApple(apples[i]);
+        std::cout<<"snake pos"<<snakes[0].getHead().first<<" "<<snakes[0].getHead().second<<std::endl;
         if(eat != -1)
         {
             snakes[eat].grow();
             refreshApple(apples[i], i);
+            
         }
     }
 
@@ -57,7 +60,7 @@ void ServerLogic::initGame(int players)
         if(server.getNumberOfClients() > (int)snakes.size())
         {
             std::unique_lock<std::mutex> mlock(mut);
-            snakes.push_back(Snake(std::pair<int, int>(std::rand() % MAP_SIZE, std::rand() % MAP_SIZE), right));
+            snakes.push_back(Snake(std::pair<int, int>(std::rand() % MAP_SIZE, std::rand() % MAP_SIZE), MAP_SIZE));
             std::cout<<"added snake"<<std::endl;
 
             for (size_t i = 0; i < (size_t)server.getNumberOfClients()-1; i++)
@@ -73,7 +76,7 @@ void ServerLogic::initGame(int players)
         }
     }
 
-    stepPause();
+    usleep(30000);
     initApples(APPLES_COUNT);
     std::cout<<"added apple"<<std::endl;
 }
@@ -101,6 +104,7 @@ void ServerLogic::serverReader(int index)
             {
                 std::cout<<"readed direct, send to all \n";
                 data.m_snakeIndex = index;
+                snakes[index].setDirect(data.m_direction);
                 server.sendToAll(data);
             }
             break;
