@@ -7,7 +7,7 @@
 #include <unistd.h> 
 #include <string.h> 
 #include <iostream>
-#include <stack>
+#include <queue>
 #include "Data.h"
 #include <mutex>
 #include <condition_variable>
@@ -27,7 +27,7 @@
         int sock = 0;
         sockaddr_in serv_addr;
         char buffer[BUFFER_SIZE];
-        std::stack<Data> readBuffer;
+        std::queue<Data> readBuffer;
         std::mutex mut;
         std::condition_variable cond;
         void reader();
@@ -38,6 +38,7 @@
         void sendMsg(Data& msg);
         Data readMsg();
         void exitClient();
+        bool getConnected();
 
     };
     

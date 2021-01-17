@@ -11,7 +11,7 @@
 #include <iostream> 
 #include <vector>
 #include "Data.h"
-#include <stack>
+#include <queue>
 #include <mutex>
 #include <condition_variable>
 #include <thread>
@@ -26,7 +26,7 @@ class Server
 private:
     int server_fd;
     std::vector<int> client_socket;
-    std::vector<std::stack<Data> > readBuffer;
+    std::vector<std::queue<Data> > readBuffer;
     sockaddr_in address;
     char buffer[BUFFER_SIZE];
     void acceptConnection();
@@ -44,6 +44,7 @@ public:
     void stopServer();
     int getSocketClient(int i);
     int getNumberOfClients();
+    bool running();
 };
     
 

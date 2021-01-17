@@ -68,7 +68,7 @@ void Server::acceptConnection()
 void Server::sendMsg(int index, Data& msg) 
 {
     int val = send(client_socket[index], &msg, sizeof(msg), 0); 
-    std::cout<<"message sent "<<val<<"B\n"; 
+    std::cout<<"message sent type: "<<msg.m_type<<" "<<val<<"B\n"; 
 }
 
 void Server::sendToAll(Data& msg) 
@@ -81,18 +81,20 @@ void Server::sendToAll(Data& msg)
 
 Data Server::readMsg(int index) 
 {
+    
     std::unique_lock<std::mutex> mlock(mut);
     while(readBuffer[index].empty())
     {
         cond.wait(mlock);
     }
-    Data dat = readBuffer[index].top();
+    Data dat = readBuffer[index].front();
     readBuffer[index].pop();
     return dat;
 }
 void Server::stopServer() 
 {
     serverRunning = false;
+    delete this;
 }
 
 int Server::getSocketClient(int i) 
@@ -103,6 +105,11 @@ int Server::getSocketClient(int i)
 int Server::getNumberOfClients() 
 {
     return client_socket.size();
+}
+
+bool Server::running() 
+{
+    return serverRunning;
 }
 
 void Server::reader() 

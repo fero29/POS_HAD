@@ -46,7 +46,7 @@
         {
             cond.wait(mlock);
         }
-        Data dat = readBuffer.top();
+        Data dat = readBuffer.front();
         readBuffer.pop();
         return dat;
     }
@@ -57,6 +57,11 @@
         delete this;
     }
     
+    bool Client::getConnected() 
+    {
+        return connected;
+    }
+    
     void Client::reader() 
     {
         while (connected)
@@ -64,10 +69,10 @@
             int val = read( sock , buffer, sizeof(buffer)); 
             if(val > 0)
             {
-                std::cout<<"message readed "<<val<<"B\n";
                 Data* data = (Data*)buffer;
                 std::unique_lock<std::mutex> mlock(mut);
                 readBuffer.push(*data);
+                std::cout<<"message readed type: "<<data->m_type<<" "<<val<<"B\n";
                 mlock.unlock();
                 cond.notify_one();
             }
